@@ -45,6 +45,8 @@ for i in range(len(test)):
   test.loc[i, "text"] = tokens
 print(test)
 
+train['title'] = train['title'].astype(str)
+
 for i in range(len(train)):
   tokens = nlp(train.loc[i, "title"])
   test.loc[i, "title"] = tokens
