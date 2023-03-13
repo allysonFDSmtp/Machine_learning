@@ -21,3 +21,20 @@ my_local_drive='/content/gdrive/My Drive/ProjetMachineLearning'
 sys.path.append(my_local_drive)
 # Se positionner sur le répertoire associé
 %cd $my_local_drive
+
+
+
+
+
+
+
+
+
+
+
+
+
+#test.loc[i, "text"]
+
+s = "Un essai"
+print(len(s))
