@@ -11,7 +11,7 @@ import sklearn
 import pandas as pd
 import numpy as np
 
-Double-cliquez (ou appuyez sur Entrée) pour modifier
+#Double-cliquez (ou appuyez sur Entrée) pour modifier
 #Lecture des données test
 from google.colab import drive
 drive.mount('/content/gdrive/')
@@ -22,19 +22,145 @@ sys.path.append(my_local_drive)
 # Se positionner sur le répertoire associé
 %cd $my_local_drive
 
+#IMPORTATION : récupération depuis le Drive des données à traiter
+#Lecture des données test
+rawtest=pd.read_csv('HAI817_Projet_test.csv', sep=',')
+test=rawtest
+test=test[['title','text','our rating']]
+#Lecture des données train
+rawtrain=pd.read_csv('HAI817_Projet_train.csv', sep=',')
+train=rawtrain
+train=train[['title','text','our rating']]
+
+#PRE-TRAITEMENT : Tokenisation ou conversion String -> Tableau (délimiteur : espaces)
+#!python -m spacy download en_core_web_sm
+# ^^^ Cette ligne est à décommenter si spacy n'a pas déjà été installé
+import spacy
+nlp = spacy.load("en_core_web_sm")
+for i in range(len(test)):
+  tokens = nlp(test.loc[i, "title"])
+  test.loc[i, "title"] = tokens
+for i in range(len(test)):
+  tokens = nlp(test.loc[i, "text"])
+  test.loc[i, "text"] = tokens
+print(test)
+
+for i in range(len(train)):
+  tokens = nlp(train.loc[i, "title"])
+  test.loc[i, "title"] = tokens
+for i in range(len(train)):
+  tokens = nlp(train.loc[i, "text"])
+  test.loc[i, "text"] = tokens
+#print(len(tokens)) Affiche le nb de mots dans le texte
+print(train)
+
+#pip install nltk
+#import nltk
+#nltk.download('stopwords')
+#nltk.corpus.stopwords.words('english')
+#from nltk.tokenize import word_tokenize
+# la liste des tokens de la première phrase
+
+#tokens = word_tokenize(phrases[0])
+#print(tokens)
+
+
+#nlp = spacy.load(str(test.loc[i, "title"]))
+#tokencontainer = nlp(str(test.loc[i, "title"]))
+#for token in tokencontainer:
+#    print(token.text)
 
 
 
+from spacy.tokenizer import Tokenizer
+from spacy.lang.en import English
+nlp = English()
+# Creating a blank Tokenizer with just the English vocab
+tokenizer = Tokenizer(nlp.vocab)
+tokens = tokenizer(str(test.loc[i, "title"]))
+print("Blank tokenizer",end=" : ")
+for token in tokens:
+  print(token,end=', ')
+ # Construction 2
+from spacy.lang.en import English
+nlp = English()
+# Creating a Tokenizer with the default settings for English
+tokenizer = nlp.tokenizer
+tokens = tokenizer(str(test.loc[i, "title"]))
+print("\nDefault tokenizer",end=' : ')
+for token in tokens:
+  print(token,end=', ')
+
+#for i in range(len(test)):
+#  test.loc[i, "title"] = str(test.loc[i, "title"]).split()
+#  test.loc[i, "text"] = str(test.loc[i, "text"]).split()
+#for i in range(len(train)):
+#  train.loc[i, "title"] = str(train.loc[i, "title"]).split()
+#  train.loc[i, "text"] = str(train.loc[i, "text"]).split()
 
 
+#print(test)
+#print(train)
 
+#PRE-TRAITEMENT : suppression des StopWords
+#LIST OF STOPWORDS
+stopwords = [
+#determiners
+"The ", " the ", "A ", " a ", "An ", " an ", "Some ", " some ", "Of ", " of ", 
+"This ", " this ", "That ", " that ", "These ", " these", "Those ", " those ", 
+"My ", " my ", "Your ", " your ", "Yours ", " yours", "His ", " his ", "Her ", " her ", "Him ", " him", "Our ", " our ", "Their ", " their ", 
+"Which ", " which ", " Whom ", " whom", 
+"Another ", " another", 
+#conjunctions
+"For ", " for ", "Nor ", " nor ", "But ", " but ", "Or ", " or ", "Yet ", " yet ", "So ", " so ", 
+#prepositions
+"In ", "in ", "Under ", "under ", "Towards ", "towards ", "Before ", "before "
+]
 
+#most used verbs
+#
+# "be
+# "have
+# "do
+# "say
+# "get
+# "make
+# "go
+# "know
+# "take
+# "see
+# "come
+# "think
+# "look
+# "want
+# "give
+# "use
+# "find
+# "tell
+# "ask
+# "work
+# "seem
+# "feel
+# "try
+# "leave
+# "call
 
+#¬ formes négatives
+for i in range(len(test)):
+	for w in range(len(stopwords)):
+		test.loc[i, "text"] = test.loc[i, "text"].replace(stopwords[w], " ")
+for i in range(len(train)):
+	for w in range(len(stopwords)):
+		train.loc[i, "text"] = train.loc[i, "text"].replace(stopwords[w], " ")
 
-
-
+#AFFICHAGE : retourne les données une fois traitées
+print(test)
+print(train)
 
 #test.loc[i, "text"]
 
 s = "Un essai"
 print(len(s))
+
+
+
