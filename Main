@@ -1,0 +1,23 @@
+#!usr/bin/env python 
+INITIALISATION : import des packages nécessaires
+#python3 ml.py
+import warnings
+warnings.filterwarnings("ignore", category=FutureWarning)
+import seaborn as sns
+import matplotlib.pyplot as plt
+import sys
+import sklearn
+
+import pandas as pd
+import numpy as np
+
+Double-cliquez (ou appuyez sur Entrée) pour modifier
+#Lecture des données test
+from google.colab import drive
+drive.mount('/content/gdrive/')
+my_local_drive='/content/gdrive/My Drive/ProjetMachineLearning'
+#my_local_drive='/content/gdrive/Partagés avec moi/ProjetMachineLearning'
+# Ajout du path pour les librairies, fonctions et données
+sys.path.append(my_local_drive)
+# Se positionner sur le répertoire associé
+%cd $my_local_drive
